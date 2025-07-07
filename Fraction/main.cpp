@@ -1,7 +1,10 @@
 ﻿#include <iostream>
 using namespace std;
 
-class Fraction
+class Fraction; //Объявление класса
+Fraction operator*(Fraction left, Fraction right); //Объявление оператора
+Fraction operator/(const Fraction& left, const Fraction& right);
+class Fraction // Описание класса
 {
 	int integer; //Целая часть
 	int numerator; //Числитель
@@ -89,7 +92,30 @@ public:
 		return *this;
 	}
 
+	Fraction& operator*=(const Fraction& other)
+	{
+		return *this = *this * other;
+	}
 
+	Fraction& operator/=(const Fraction& other)
+	{
+		return *this = *this / other;
+	}
+
+
+	//			Incremento/Decremento
+	Fraction& operator++()
+	{
+		integer++;
+		return *this;
+	}
+
+	const Fraction& operator++(int)
+	{
+		Fraction old = *this;
+		integer++;
+		return old;
+	}
 
 	//						Methods:
 	Fraction& to_improper()
@@ -108,6 +134,31 @@ public:
 		return *this;
 	}
 
+	Fraction inverted()const
+	{
+		Fraction inverted = *this;
+		inverted.to_improper();
+		swap(inverted.numerator, inverted.denominator); //swap - меняет местами две переменные
+		return inverted;
+	}
+
+	Fraction& reduce()
+	{
+		int more, less, rest;
+		if (numerator > denominator) more = numerator, less = denominator;
+		else less = numerator, more = denominator;
+		do
+		{
+			rest = more % less;
+			more = less;
+			less = rest;
+		} while (rest);
+		int GCD = more; // GCD - Greatest Common Divisor (наибольший общий делитель)
+		numerator /= GCD;
+		denominator /= GCD;
+		return *this;
+	}
+
 	void print()const
 	{
 		if (integer) cout << integer;
@@ -121,6 +172,17 @@ public:
 		cout << endl;
 	}
 };
+
+Fraction operator+(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return Fraction
+	(
+		left.get_numerator() * right.get_denominator() + right.get_numerator() * left.get_denominator(),
+		left.get_denominator() * right.get_denominator()
+	).to_proper();
+}
 
 Fraction operator*(Fraction left, Fraction right)
 {
@@ -141,10 +203,17 @@ Fraction operator*(Fraction left, Fraction right)
 	(
 		left.get_numerator() * right.get_numerator(),
 		left.get_denominator() * right.get_denominator()
-	).to_proper();
+	).to_proper().reduce();
+}
+
+Fraction operator/(const Fraction& left, const Fraction& right)
+{
+	return left * right.inverted();
 }
 
 //#define CONSTRUCTORS_CHECK
+#define ARITHMETICAL_OPERATORS_CHECK
+//#define INCREMENTO_DECREMENTO_CHECK
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -163,11 +232,35 @@ void main()
 	D.print();
 #endif // CONSTRUCTORS_CHECK
 
-	Fraction A(1, 2, 3);
+#ifdef ARITHMETICAL_OPERATORS_CHECK
+	Fraction A(2, 3, 4);
 	A.print();
-	Fraction B(2, 3, 4);
+	Fraction B(3, 4, 5);
 	B.print();
 	Fraction C = A * B;
 	C.print();
+
+	C = A / B;
+	C.print();
+
+	A *= B;
+	A.print();
+
+	A /= B;
+	A.print();
+
+	C = A + B;
+	C.print();
+#endif // ARITHMETICAL_OPERATORS_CHECK
+
+#ifdef INCREMENTO_DECREMENTO_CHECK
+	Fraction A(2, 3, 4);
+	Fraction B = A++;
+	A.print();
+	B.print();
+#endif // INCREMENTO_DECREMENTO_CHECK
+
+
+
 
 }
