@@ -12,15 +12,11 @@ template <typename T> T get_gcd(T a, T b)
 	return a;
 }
 
-template <typename T> T get_lcm(T a, T b)
-{
-	return (a * b) / get_gcd(a, b);
-}
 class Fraction;
 Fraction operator*(Fraction left, Fraction right);
 Fraction operator/(Fraction left, Fraction right);
-Fraction operator+(const Fraction& left, const Fraction& right);
-Fraction operator-(const Fraction& left, const Fraction& right);
+Fraction operator+(Fraction left, Fraction right);
+Fraction operator-(Fraction left, Fraction right);
 
 class Fraction
 {
@@ -225,34 +221,30 @@ Fraction operator/(Fraction left, Fraction right)
 	).to_proper();
 }
 
-Fraction operator+(const Fraction& left, const Fraction& right)
+Fraction operator+(Fraction left, Fraction right)
 {
-	if (left.get_denominator() == right.get_denominator())
-		return Fraction(left.get_integer() + right.get_integer(),
-						left.get_numerator() + right.get_numerator(),
-						left.get_denominator()).to_proper().shorten_fraction();
+	left.to_improper();
+	right.to_improper();
 
-	int lcm = get_lcm(left.get_denominator(), right.get_denominator());
 
-	return Fraction(left.get_integer() + right.get_integer(),
-					left.get_numerator() * (lcm / left.get_denominator()) +
-					right.get_numerator() * (lcm / right.get_denominator()),
-					lcm).to_proper().shorten_fraction();
+	return Fraction
+	(
+		left.get_numerator() * right.get_denominator() + right.get_numerator() * left.get_denominator(),
+		left.get_denominator() * right.get_denominator()
+	).to_proper().shorten_fraction();
 }
 
-Fraction operator-(const Fraction& left, const Fraction& right)
+Fraction operator-(Fraction left, Fraction right)
 {
-	if (left.get_denominator() == right.get_denominator())
-		return Fraction(left.get_integer() - right.get_integer(),
-						left.get_numerator() - right.get_numerator(),
-						left.get_denominator());
+	left.to_improper();
+	right.to_improper();
 
-	int lcm = get_lcm(left.get_denominator(), right.get_denominator());
 
-	return Fraction(left.get_integer() - right.get_integer(),
-					left.get_numerator() * (lcm / left.get_denominator()) -
-					right.get_numerator() * (lcm / right.get_denominator()),
-					lcm).to_proper().shorten_fraction();
+	return Fraction
+	(
+		left.get_numerator() * right.get_denominator() - right.get_numerator() * left.get_denominator(),
+		left.get_denominator() * right.get_denominator()
+	).to_proper().shorten_fraction();
 }
 
 bool operator==(Fraction left, Fraction right)
@@ -299,8 +291,8 @@ bool operator<=(const Fraction& left, const Fraction& right)
 
 
 //#define CONSTRUCTORS_CHECK
-//#define ARITHMETIC_CHECK
-#define COMPOUND_ASSIGNMENT_CHECK
+#define ARITHMETIC_CHECK
+//#define COMPOUND_ASSIGNMENT_CHECK
 //#define COMPARISON_CHECK
 //#define INCREMENT_DECREMENT_CHECK
 void main()
