@@ -1,4 +1,6 @@
-﻿#include <iostream>
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <cstring>
 using namespace std;
 
 class Fraction; //Объявление класса
@@ -303,11 +305,25 @@ std::ostream& operator<<(std::ostream& os, const Fraction& obj)
 
 std::istream& operator>>(std::istream& is, Fraction& obj)
 {
-	int integer, numerator, denominator;
+	/*int integer, numerator, denominator;
 	is >> integer >> numerator >> denominator;
 	obj.set_integer(integer);
 	obj.set_numerator(numerator);
-	obj.set_denominator(denominator);
+	obj.set_denominator(denominator); */
+	const int LEN = 12;
+	char line[LEN] = {};
+	cin.getline(line, LEN);
+	int digits[3] = {};
+	int i = 0;
+	const char separators[] = { '.', ',', '/', ' ', '(', ')' };
+	char* p_line = strtok(line, separators);
+
+	while (p_line)
+	{
+		digits[i++] = atoi(p_line);
+		p_line = strtok(NULL, separators);
+	}
+	i == 1 ? obj = Fraction(digits[0]) : i == 2 ? obj = Fraction(digits[0], digits[1]) : obj = Fraction(digits[0], digits[1], digits[2]);
 	return is;
 }
 
@@ -315,10 +331,10 @@ std::istream& operator>>(std::istream& is, Fraction& obj)
 //#define ARITHMETICAL_OPERATORS_CHECK
 //#define INCREMENTO_DECREMENTO_CHECK
 //#define COMPARISON_OPERATORS
-//#define STREAMS_CHECK
+#define STREAMS_CHECK
 //#define TYPE_CONVERSIONS_BASICS
 //#define CONVERSIONS_FROM_OTHER_TO_CLASS
-#define CONVERSIONS_FROM_CLASS_TO_OTHER
+//#define CONVERSIONS_FROM_CLASS_TO_OTHER
 //#define HAVE_A_NICE_DAY
 void main()
 {
