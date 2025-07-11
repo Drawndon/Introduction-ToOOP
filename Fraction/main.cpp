@@ -58,11 +58,13 @@ public:
 
 	explicit Fraction(double dbl_num)
 	{
-		integer = dbl_num;
-		dbl_num -= integer;
-		denominator = 10e+7;
-		numerator = dbl_num * denominator + 0.9;
+		integer = dbl_num; //Получаем целую часть дроби
+		dbl_num -= integer; //Убираем целую часть из десятичной дроби
+		denominator = 1e+9; //Максимальное число, которое можно записать в 'int' 
+		numerator = dbl_num * denominator + 0.9; //Вытаскиваем дробную часть в числитель
 		reduce();
+		cout << "SingleArgumentConstructor:" << this << endl;
+
 	}
 
 	Fraction(int numerator, int denominator)
@@ -331,11 +333,11 @@ std::istream& operator>>(std::istream& is, Fraction& obj)
 //#define ARITHMETICAL_OPERATORS_CHECK
 //#define INCREMENTO_DECREMENTO_CHECK
 //#define COMPARISON_OPERATORS
-#define STREAMS_CHECK
+//#define STREAMS_CHECK
 //#define TYPE_CONVERSIONS_BASICS
 //#define CONVERSIONS_FROM_OTHER_TO_CLASS
 //#define CONVERSIONS_FROM_CLASS_TO_OTHER
-//#define HAVE_A_NICE_DAY
+#define HAVE_A_NICE_DAY
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -435,7 +437,7 @@ void main()
 #endif // CONVERSIONS_FROM_CLASS_TO_OTHER
 
 #ifdef HAVE_A_NICE_DAY
-	Fraction A = Fraction(2.6);
+	Fraction A = Fraction(3.333); //Conversion from 'double' to 'Fraction'
 	cout << A << endl;
 #endif // HAVE_A_NICE_DAY
 
