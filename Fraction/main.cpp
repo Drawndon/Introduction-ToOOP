@@ -294,6 +294,7 @@ bool operator<=(const Fraction& left, const Fraction& right)
 
 std::ostream& operator<<(std::ostream& os, const Fraction& obj)
 {
+	//Stream extraction operator
 	if (obj.get_integer()) os << obj.get_integer();
 	if (obj.get_numerator())
 	{
@@ -312,20 +313,20 @@ std::istream& operator>>(std::istream& is, Fraction& obj)
 	obj.set_integer(integer);
 	obj.set_numerator(numerator);
 	obj.set_denominator(denominator); */
-	const int LEN = 12;
-	char line[LEN] = {};
-	cin.getline(line, LEN);
-	int digits[3] = {};
-	int i = 0;
-	const char separators[] = { '.', ',', '/', ' ', '(', ')' };
+	const int LEN = 12; //размер буфера ввода
+	char line[LEN] = {}; //буфер ввода
+	is.getline(line, LEN);
+	int digits[3] = {}; //числа, введенные с клавиатуры
+	int i = 0; //количество введенных чисел
+	const char separators[] =  ".,/ ()"; //разделители
 	char* p_line = strtok(line, separators);
 
-	while (p_line)
+	while (p_line && i < 3)
 	{
-		digits[i++] = atoi(p_line);
+		digits[i++] = atoi(p_line); //ASCII-string to integer
 		p_line = strtok(NULL, separators);
 	}
-	i == 1 ? obj = Fraction(digits[0]) : i == 2 ? obj = Fraction(digits[0], digits[1]) : obj = Fraction(digits[0], digits[1], digits[2]);
+	i == 0 ? obj = Fraction() : i == 1 ? obj = Fraction(digits[0]) : i == 2 ? obj = Fraction(digits[0], digits[1]) : obj = Fraction(digits[0], digits[1], digits[2]);
 	return is;
 }
 
@@ -333,10 +334,10 @@ std::istream& operator>>(std::istream& is, Fraction& obj)
 //#define ARITHMETICAL_OPERATORS_CHECK
 //#define INCREMENTO_DECREMENTO_CHECK
 //#define COMPARISON_OPERATORS
-//#define STREAMS_CHECK
+#define STREAMS_CHECK
 //#define TYPE_CONVERSIONS_BASICS
 //#define CONVERSIONS_FROM_OTHER_TO_CLASS
-#define CONVERSIONS_FROM_CLASS_TO_OTHER
+//#define CONVERSIONS_FROM_CLASS_TO_OTHER
 //#define HAVE_A_NICE_DAY
 void main()
 {
