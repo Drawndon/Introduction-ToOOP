@@ -55,6 +55,18 @@ public:
 		cout << "Destructor:\t\t" << this << endl;
 	}
 
+	//				Operators
+	String& operator=(const String& other)
+	{
+		if (this == &other) return *this;
+		delete[] this->str;
+		this->size = other.size;
+		this->str = new char[size] {};
+		for (int i = 0; i < size; i++) this->str[i] = other.str[i];
+		cout << "CopyAssignment:\t\t" << this << endl;
+		return *this;
+	}
+
 	//				Methods:
 	void print()const
 	{
@@ -118,6 +130,10 @@ void main()
 	cout << str1 << endl;
 
 	String str2 = str1;
+	cout << str2 << endl;
+
+	String str3 = "World";
+	str2 = str3;
 	cout << str2 << endl;
 
 
