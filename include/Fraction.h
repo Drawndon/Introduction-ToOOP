@@ -5,14 +5,6 @@ using std::cin;
 using std::cout;
 using std::endl;
 
-class Fraction;
-
-Fraction operator+(Fraction left, Fraction right);
-
-Fraction operator*(Fraction left, Fraction right);
-
-Fraction operator/(const Fraction& left, const Fraction& right);
-
 class Fraction // Описание класса
 {
 	int integer; //Целая часть
@@ -74,7 +66,11 @@ public:
 	void print()const;
 };
 
+Fraction operator+(Fraction left, Fraction right);
 
+Fraction operator*(Fraction left, Fraction right);
+
+Fraction operator/(const Fraction& left, const Fraction& right);
 
 //						Comparison operators
 bool operator==(Fraction left, Fraction right);
