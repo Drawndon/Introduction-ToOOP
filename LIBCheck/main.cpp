@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#pragma comment(lib, "Class String.lib")
+#pragma comment(lib, "Class String.lib") //Можно так, а можно в 'Input'
 
 #define ARITHMETICAL_OPERATORS_CHECK
 
