@@ -1,9 +1,11 @@
 #include <iostream>
 #include <Point.h>
-//#include <String.h>
+#include <MyString.h>
 #include <Fraction.h>
 
 using namespace std;
+
+#pragma comment(lib, "Class String.lib")
 
 #define ARITHMETICAL_OPERATORS_CHECK
 
@@ -20,4 +22,9 @@ void main()
 	B.print();
 	C.print();
 
+	Fraction F1(1,2);
+	cout << F1 << endl;
+
+	String str1 = "Hello";
+	cout << str1 << endl;
 }
